@@ -1,0 +1,122 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pylab as plt
+
+data1=pd.read_csv(r"train-File.path")
+data_fid_a2b=data1["fid_a2b"].to_numpy()
+data_dino_a2b=data1["dino_struct_a2b"].to_numpy()
+data_fid_b2a=data1["fid_b2a"].to_numpy()
+data_dino_b2a=data1["dino_struct_b2a"].to_numpy()
+data_gan_b=data1["gan_b"].to_numpy()
+data_gan_a=data1["gan_a"].to_numpy()
+data_disc_b=data1["disc_b"].to_numpy()
+data_disc_a=data1["disc_a"].to_numpy()
+data_cycle_a=data1["cycle_a"].to_numpy()
+data_cycle_b=data1["cycle_b"].to_numpy()
+
+def standardlize(x):
+    mean_x=np.mean(x, axis=0)  
+    std_x = np.std(x, axis=0, ddof=1)
+    return (x - mean_x) / std_x  
+
+data_fid_a2b_new=standardlize(data_fid_a2b)
+data_fid_b2a_new=standardlize(data_fid_b2a)
+data_dino_a2b_new=standardlize(data_dino_a2b)
+data_dino_b2a_new=standardlize(data_dino_b2a)
+data_gan_b_new=standardlize(data_gan_b)
+data_gan_a_new=standardlize(data_gan_a)
+data_disc_b_new=standardlize(data_disc_b)
+data_disc_a_new=standardlize(data_disc_a)
+data_cycle_a_new=standardlize(data_cycle_a)
+data_cycle_b_new=standardlize(data_cycle_b)
+
+axis0=data1["Step"]
+axis1=data_fid_a2b_new
+axis2=data_dino_a2b_new
+# axis3=data_disc_a_new
+plt.figure(figsize=(10,10),dpi=80)
+plt.plot(axis0,axis1)
+plt.plot(axis0,axis2)
+# plt.plot(axis0,axis3)
+plt.ylabel("score")
+plt.xlabel("step")
+plt.xticks(rotation=45)
+plt.show()
+
+#fid_a2b+cycle_a
+data_a2b_score1=0.5*data_fid_a2b_new+0.5*(0.5*data_cycle_a_new+0.5*data_dino_a2b_new)
+#fid_a2b+dino_strcut_a2b
+data_a2b_score2=0.5*data_fid_a2b_new+0.5*data_dino_a2b_new
+#gan_a+disc_a+dino_a
+data_a2b_score3=(data_disc_a_new+data_gan_a_new)/2
+data_a2b_score3=0.5*data_a2b_score3+0.5*data_dino_a2b_new
+#gan_a+disc_a+cycle_a
+data_a2b_score4=(data_disc_a_new+data_gan_a_new)/2
+data_a2b_score4=0.5*data_a2b_score4+0.5*data_cycle_a_new
+
+#fid_b2a+cycle_b
+data_b2a_score1=0.5*data_fid_b2a_new++0.5*(0.5*data_cycle_b_new+0.5*data_dino_b2a_new)
+#fid_b2a+dino_strcut_b2a
+data_b2a_score2=0.5*data_fid_b2a_new+0.5*data_dino_b2a_new
+#gan_a+disc_a+dino_a
+data_b2a_score3=(data_disc_b_new+data_gan_b_new)/2
+data_b2a_score3=0.5*data_b2a_score3+0.5*data_dino_b2a_new
+#gan_a+disc_a+cycle_a
+data_b2a_score4=(data_disc_b_new+data_gan_b_new)/2
+data_b2a_score4=0.5*data_b2a_score4+0.5*data_cycle_b_new
+# data_b2a_score1=0.7*data_fid_b2a_new+0.3*data_dino_b2a_new
+# data_a2b_score2=0.5*data_gan_a_new+0.5*data_disc_a_new
+# data_b2a_score2=0.5*data_gan_b_new+0.5*data_disc_b_new
+
+#fid_a2b+cycle_a
+data_a2b_score1=0.5*data_fid_a2b_new+0.5*(0.5*data_cycle_a_new+0.5*data_dino_a2b_new)
+#fid_a2b+dino_strcut_a2b
+data_a2b_score2=0.5*data_fid_a2b_new+0.5*data_dino_a2b_new
+#gan_a+disc_a+dino_a
+data_a2b_score3=(data_disc_a_new+data_gan_a_new)/2
+data_a2b_score3=0.5*data_a2b_score3+0.5*data_dino_a2b_new
+#gan_a+disc_a+cycle_a
+data_a2b_score4=(data_disc_a_new+data_gan_a_new)/2
+data_a2b_score4=0.5*data_a2b_score4+0.5*data_cycle_a_new
+
+#fid_b2a+cycle_b
+data_b2a_score1=0.5*data_fid_b2a_new++0.5*(0.5*data_cycle_b_new+0.5*data_dino_b2a_new)
+#fid_b2a+dino_strcut_b2a
+data_b2a_score2=0.5*data_fid_b2a_new+0.5*data_dino_b2a_new
+#gan_a+disc_a+dino_a
+data_b2a_score3=(data_disc_b_new+data_gan_b_new)/2
+data_b2a_score3=0.5*data_b2a_score3+0.5*data_dino_b2a_new
+#gan_a+disc_a+cycle_a
+data_b2a_score4=(data_disc_b_new+data_gan_b_new)/2
+data_b2a_score4=0.5*data_b2a_score4+0.5*data_cycle_b_new
+# data_b2a_score1=0.7*data_fid_b2a_new+0.3*data_dino_b2a_new
+# data_a2b_score2=0.5*data_gan_a_new+0.5*data_disc_a_new
+# data_b2a_score2=0.5*data_gan_b_new+0.5*data_disc_b_new
+
+score=score1
+
+axis0=data1["Step"]
+axis1=score
+plt.figure(figsize=(10,10),dpi=80)
+plt.plot(axis0,axis1)
+# plt.plot(axis0,score2)
+plt.ylabel("score")
+plt.xlabel("step")
+plt.xticks(rotation=45)
+plt.show()
+
+l=0
+min=100
+for i in range(score.size):
+    if score[i] < min:
+        min=score[i]
+        l=i
+print(data1["Step"][l])
+result=np.argsort(score)
+print("----------------------------")
+for i in range(5):
+    l=result[i]
+    print(data1["Step"][l])
+
+
+
